@@ -1,5 +1,0 @@
-env/
---pycache--/
-*.pyc
-*.db
-*.sqlite3
