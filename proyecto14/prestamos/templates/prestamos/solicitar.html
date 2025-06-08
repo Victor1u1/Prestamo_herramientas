@@ -1,0 +1,14 @@
+{% extends 'prestamos/base.html' %}
+
+{% block content %}
+<h2>Solicitar préstamo de "{{ herramienta.nombre }}"</h2>
+
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+
+  <button type="submit">Enviar solicitud</button>
+</form>
+
+<a href="{% url 'prestamos:mis_prestamos' %}">Volver a mis préstamos</a>
+{% endblock %}

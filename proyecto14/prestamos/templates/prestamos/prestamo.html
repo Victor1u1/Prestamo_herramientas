@@ -1,0 +1,22 @@
+{% extends 'prestamos/base.html' %}
+
+{% block content %}
+<h2>Historial de Prestamos</h2>
+
+{% if prestamos %}
+  <ul>
+    {% for prestamos in prestamos %}
+      <li>
+        <strong>{{ prestamos.herramienta.nombre }}</strong> —
+        Estado: <em>{{ prestamos.get_estado_display }}</em> |
+        Desde: {{ prestamos.fecha_inicio }} |
+        Hasta: {{ prestamos.fecha_fin }}
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>No has solicitado ningún préstamo aún.</p>
+{% endif %}
+
+<a href="{% url 'herramientas:lista_herramientas' %}">Ver herramientas disponibles</a>
+{% endblock %}

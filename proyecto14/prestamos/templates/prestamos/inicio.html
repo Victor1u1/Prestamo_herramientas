@@ -1,0 +1,11 @@
+{% extends 'prestamos/base.html' %}
+
+{% block content %}
+<h2>Solicitud y Préstamo de Herramientas</h2>
+
+<ul>
+  <li><a href="{% url 'prestamos:mis_prestamos' %}">Préstamos solicitados</a></li>
+  <li><a href="{% url 'prestamos:gestionar_prestamos_recibidos' %}">Bandeja de Solicitud</a></li>
+  <li><a href="{% url 'herramientas:lista_herramientas' %}">Herramientas disponibles</a></li>
+</ul>
+{% endblock %}
