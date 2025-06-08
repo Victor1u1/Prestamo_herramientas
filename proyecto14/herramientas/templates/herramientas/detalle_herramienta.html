@@ -1,0 +1,26 @@
+{% extends 'herramientas/base.html' %}
+{% block titulo %}Detalle{% endblock titulo %}
+{% block contenido %}
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            {% if herramienta.imagen %}
+            <img src="{{ herramienta.imagen.url }}" class="img-fluid mb-3" alt="{{ herramienta.nombre }}">
+            {% endif %}
+            <h2>{{ herramienta.nombre }}</h2>
+            <p>{{ herramienta.descripcion }}</p>
+            <p><strong>Estado:</strong> {{ herramienta.get_estado_display }}</p>
+            <p><strong>Disponibilidad:</strong> {{ herramienta.get_disponibilidad_display }}</p>
+            <p><strong>Propietario:</strong> {{ herramienta.propietario.username }}</p>
+            <p><strong>Registrada el:</strong> {{ herramienta.fecha_registro }}</p>
+            
+            {% if es_propietario %}
+            <div class="mt-3">
+                <a href="" class="btn btn-warning">Editar</a>
+                <a href="{% url 'eliminar_herramienta' herramienta.pk %}" class="btn btn-danger">Eliminar</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

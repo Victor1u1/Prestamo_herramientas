@@ -1,0 +1,54 @@
+{% extends "herramientas/base.html" %}
+
+{% block titulo %}Herramientas{% endblock titulo %}
+{% block contenido %}
+<div class="container">
+    <h2>Mis Herramientas</h2>
+   <a href="{% url 'registro_herramienta' request.user.pk %}" class="btn btn-primary mb-3">Agregar Herramienta</a>
+    
+    <div class="row">
+        {% for herramienta in herramientas_propias %}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                {% if herramienta.imagen %}
+                <img src="{{ herramienta.imagen.url }}" class="card-img-top" alt="{{ herramienta.nombre }}">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ herramienta.nombre }}</h5>
+                    <p class="card-text">{{ herramienta.descripcion|truncatechars:100 }}</p>
+                    <span class="badge bg-secondary">{{ herramienta.estado }}</span>
+                    <span class="badge bg-info text-dark">{{ herramienta.disponibilidad }}</span>
+                    <div class="mt-2">
+                        <a href="{% url 'detalle_herramienta' herramienta.pk %}" class="btn btn-sm btn-info">Ver</a>
+                        <a href="" class="btn btn-sm btn-warning">Editar</a>
+                        <a href="{% url 'eliminar_herramienta' herramienta.pk %}" class="btn btn-sm btn-danger">Eliminar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <h2>Herramientas de otros usuarios</h2>
+    <div class="row">
+        {% for herramienta in herramientas_otras %}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                {% if herramienta.imagen %}
+                <img src="{{ herramienta.imagen.url }}" class="card-img-top" alt="{{ herramienta.nombre }}">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ herramienta.nombre }}</h5>
+                    <p class="card-text">{{ herramienta.descripcion|truncatechars:100 }}</p>
+                    <span class="badge bg-secondary">{{ herramienta.estado }}</span>
+                    <span class="badge bg-info text-dark">{{ herramienta.disponibilidad }}</span>
+                    <div class="mt-2">
+                        <a href="{% url 'detalle_herramienta' herramienta.pk %}" class="btn btn-sm btn-info">Ver</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

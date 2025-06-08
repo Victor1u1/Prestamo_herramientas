@@ -1,0 +1,11 @@
+{% extends "herramientas/base.html" %}
+
+{% block titulo %}Registro de Herramienta{% endblock titulo %}
+{% block contenido %}
+    <h2>REGISTRAR NUEVA HERRAMIENTA</h2>
+    <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Registrar</button>
+    </form>
+{% endblock contenido %}

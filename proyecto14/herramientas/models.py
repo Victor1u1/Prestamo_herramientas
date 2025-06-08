@@ -1,6 +1,7 @@
 from django.db import models
 from usuarios.models import Usuario
 from django.utils import timezone
+from django.urls import reverse
 import os
 
 def imagen_herramienta_path(instance, filename):
@@ -38,3 +39,13 @@ class Herramienta(models.Model):
     
     def __str__(self):
         return f"{self.nombre} - {self.propietario.username}"
+
+    def delete(self, *args, **kwargs):
+        # Borra la imagen del filesystem cuando se elimina la herramienta
+        if self.imagen:
+            if os.path.isfile(self.imagen.path):
+                os.remove(self.imagen.path)
+        super().delete(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse('detalle_herramienta', kwargs={'pk': self.pk})
