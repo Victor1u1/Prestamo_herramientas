@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Mis Calificaciones Recibidas</h2>
+
+{% if calificaciones %}
+<table>
+    <thead>
+        <tr>
+            <th>Herramienta</th>
+            <th>Calificado por</th>
+            <th>Puntaje</th>
+            <th>Comentario</th>
+            <th>Fecha</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for calificacion in calificaciones %}
+        <tr>
+            <td>{{ calificacion.prestamo.herramienta.nombre }}</td>
+            <td>{{ calificacion.califica_usuario.username }}</td>
+            <td>{{ calificacion.get_puntaje_display }}</td>
+            <td>{{ calificacion.comentario }}</td>
+            <td>{{ calificacion.fecha|date:"d/m/Y H:i" }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No has recibido calificaciones.</p>
+{% endif %}
+{% endblock %}

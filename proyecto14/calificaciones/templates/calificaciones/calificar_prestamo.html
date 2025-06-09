@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Calificar Préstamo</h2>
+
+<div>
+    <p><strong>Herramienta:</strong> {{ prestamo.herramienta.nombre }}</p>
+    <p><strong>Calificando a:</strong> {{ calificado_usuario.username }}</p>
+    <p><strong>Fecha de préstamo:</strong> {{ prestamo.fecha_inicio|date:"d/m/Y" }} - {{ prestamo.fecha_fin|date:"d/m/Y" }}</p>
+</div>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Enviar Calificación</button>
+</form>
+
+<a href="{% url 'mis_prestamos' %}">Volver a mis préstamos</a>
+{% endblock %}
