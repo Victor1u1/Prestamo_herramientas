@@ -12,7 +12,11 @@
             <a href="{% url 'prestamos:mis_prestamos' %}">Mis Préstamos</a> |
             {% if user.is_authenticated %}
                 Hola, {{ user.username }} |
-                <a href="{% url 'logout' %}">Cerrar sesión</a>
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit">Cerrar sesión</button>
+                </form>
+                
             {% else %}
                 <a href="{% url 'login' %}">Iniciar sesión</a>
             {% endif %}

@@ -13,8 +13,8 @@
 <br>
 {% if user.is_authenticated %}
   <p>
-    <a href=" {% url "editar_herramienta"  herramienta.pk%} ">Editar</a>
-    <a href="{% url "eliminar_herramienta" herramienta.pk %}">Eliminar</a>
+    <a href=" {% url "herramientas:editar_herramienta"  herramienta.pk%} ">Editar</a>
+    <a href="{% url "herramientas:eliminar_herramienta" herramienta.pk %}">Eliminar</a>
   </p>
 {% endif %}
 
