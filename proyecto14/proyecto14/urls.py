@@ -25,11 +25,8 @@ urlpatterns = [
     path('usuarios/', include('usuarios.urls')),
     path('herramientas/', include('herramientas.urls', namespace='herramientas')),
     path('prestamos/', include('prestamos.urls', namespace='prestamos')),
-<<<<<<< HEAD
     path('calificaciones/', include('calificaciones.urls')),
 
-=======
->>>>>>> eb9e1174984adcb58938dc87f8762028db881245
     path('logout/', LogoutView.as_view(next_page='login'), name='logout'),
 
 ]
