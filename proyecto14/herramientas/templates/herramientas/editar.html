@@ -1,0 +1,14 @@
+{% extends 'herramientas/base.html' %}
+
+{% block content %}
+  <h1>Editar herramienta</h1>
+  
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Guardar herramienta</button>
+  </form>
+
+  <a href="{% url 'herramientas:lista_herramientas' %}">← Volver a la lista</a>
+
+{% endblock %}

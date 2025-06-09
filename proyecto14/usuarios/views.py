@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from .forms import RegistroUsuarioForm
+from django.urls import reverse
 
 def registro_view(request):
     if request.method == 'POST':
@@ -19,7 +20,7 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user:
             login(request, user)
-            return redirect('home')
+            return redirect('herramientas:lista_herramientas')
         
         else:
             return render(request, 'usuarios/login.html', {'error': 'Credenciales incorrectas'})

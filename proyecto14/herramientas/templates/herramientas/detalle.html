@@ -10,6 +10,15 @@
     <img src="{{ herramienta.imagen.url }}" alt="{{ herramienta.nombre }}" style="max-width:300px;">
 {% endif %}
 
+<br>
+{% if user.is_authenticated %}
+  <p>
+    <a href=" {% url "herramientas:editar_herramienta"  herramienta.pk%} ">Editar</a>
+    <a href="{% url "herramientas:eliminar_herramienta" herramienta.pk %}">Eliminar</a>
+  </p>
+{% endif %}
+
+
 <a href="{% url 'herramientas:lista_herramientas' %}">Volver a la lista</a>
 
 <hr>

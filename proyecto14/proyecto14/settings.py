@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'usuarios',
     'herramientas',
     'prestamos',
+      'calificaciones',
 ]
 
 MIDDLEWARE = [
@@ -57,7 +58,8 @@ ROOT_URLCONF = 'proyecto14.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],  # Si usas una carpeta global
+
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -126,3 +128,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Auth settings
 AUTH_USER_MODEL = 'usuarios.Usuario'
+
+LOGIN_URL = '/usuarios/login/'  # La URL donde tienes tu login_view

@@ -1,0 +1,12 @@
+{% extends 'herramientas/base.html' %}
+
+{% block content %}
+  <h1>Eliminar Herramienta</h1>
+  <p>¿Estas seguro de que deseas eliminar "{{herramienta.nombre}}"? </p>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Si, elimimar</button>
+    <a href="{% url "detalle_herramienta" %}"></a>
+  </form>
+{% endblock %}
