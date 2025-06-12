@@ -7,7 +7,8 @@ from prestamos.models import Prestamo
 from django.db.models import Avg
 
 
-
+def inicio_calificaciones(request):
+    return render(request, 'calificaciones/base.html')
 @login_required
 def calificar_prestamo_view(request, prestamo_id):
     prestamo = get_object_or_404(Prestamo, id=prestamo_id)
