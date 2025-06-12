@@ -28,5 +28,7 @@ urlpatterns = [
     path('calificaciones/', include('calificaciones.urls')),
 
     path('logout/', LogoutView.as_view(next_page='login'), name='logout'),
-
+    
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
