@@ -62,7 +62,7 @@ def editar_herramienta(request, pk):
         form = HerramientaForm(request.POST, request.FILES, instance=herramienta)
         if form.is_valid():
             form.save()
-            reverse('herramientas:detalle_herramienta', kwargs={'pk': herramienta.pk})
+            return redirect('herramientas:detalle_herramienta', pk=herramienta.pk)
 
     else:
         form = HerramientaForm(instance=herramienta)
