@@ -19,6 +19,7 @@ from django.urls import path, include
 from django.contrib.auth.views import LogoutView
 from django.conf.urls.static import static
 from django.conf import settings
+from usuarios.views import error_view
 
 urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
@@ -29,6 +30,7 @@ urlpatterns = [
     path('calificaciones/', include('calificaciones.urls')),
 
     path('logout/', LogoutView.as_view(next_page='login'), name='logout'),
+    path('error/', error_view, name='error'), #agrego views url en usuarios
     
 ]
 if settings.DEBUG:

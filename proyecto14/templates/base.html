@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Préstamos de Herramientas entre Vecinos</title>
+</head>
+<body>
+    <header>
+        <div>
+            <h1>Sistema de Préstamos de Herramientas</h1>
+        </div>
+        {% if user.is_authenticated %}
+        <div>
+            <span>{{ user.username }} ({{ user.get_rol_display }})</span>
+            <form method="post" action="{% url 'logout' %}" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit">Cerrar sesión</button>
+            </form>
+        </div>
+        {% endif %}
+    </header>
+
+    <div>
+        <div>
+            <!-- Panel de navegación lateral -->
+            {% if user.is_authenticated %}
+            <nav>
+                <ul>
+                    <li><a href="{% url 'dashboard' %}">Inicio</a></li>
+                    <li><a href="{% url 'perfil' %}">Mi Perfil</a></li>
+                    <li><a href="{% url 'lista_herramientas' %}">Herramientas Disponibles</a></li>
+                    <li><a href="{% url 'mis_herramientas' %}">Mis Herramientas</a></li>
+                    <li><a href="{% url 'agregar_herramienta' %}">Agregar Herramienta</a></li>
+                    <li><a href="{% url 'mis_prestamos' %}">Mis Préstamos</a></li>
+                    <li><a href="{% url 'prestamos_recibidos' %}">Préstamos Recibidos</a></li>
+                    <li><a href="{% url 'mis_calificaciones' %}">Mis Calificaciones</a></li>
+                    {% if user.is_admin %}
+                    <li><hr></li>
+                    <li><strong>Administración</strong></li>
+                    <li><a href="{% url 'lista_usuarios' %}">Gestionar Usuarios</a></li>
+                    <li><a href="/admin/" target="_blank">Panel de Administración Django</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+        </div>
+
+        <div>
+            <!-- Mensajes de alerta -->
+            {% if messages %}
+            <div>
+                {% for message in messages %}
+                <div>{{ message }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <!-- Contenido principal -->
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+</body>
+</html>

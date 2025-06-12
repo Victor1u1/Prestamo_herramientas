@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
+#from django.contrib.auth.decorators import login_required
 from .forms import RegistroUsuarioForm
 from django.urls import reverse
+#from .models import Usuario
 
 def registro_view(request):
     if request.method == 'POST':
@@ -12,6 +14,7 @@ def registro_view(request):
     else:
         form = RegistroUsuarioForm()
     return render(request, 'usuarios/registro.html', {'form': form})
+
 
 def login_view(request):
     if request.method == 'POST':
@@ -25,3 +28,8 @@ def login_view(request):
         else:
             return render(request, 'usuarios/login.html', {'error': 'Credenciales incorrectas'})
     return render(request, 'usuarios/login.html')
+
+
+
+def error_view(request):
+    return render(request, 'error.html')
