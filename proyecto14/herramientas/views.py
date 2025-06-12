@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
 from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -50,28 +51,34 @@ def crear_herramienta(request):
         form = HerramientaForm()
     return render(request, 'herramientas/crear.html', {'form': form})
 
-def editar_herramienta(request,pk):
+@login_required
+def editar_herramienta(request, pk):
     herramienta = get_object_or_404(Herramienta, pk=pk)
 
-    if herramienta.usuario != request.user :
+    if herramienta.propietario != request.user:
         return HttpResponseForbidden("No tiene permiso para editar la herramienta")
-    
+
     if request.method == 'POST':
-        form = HerramientaForm(request.POST, instance=Herramienta)
+        form = HerramientaForm(request.POST, request.FILES, instance=herramienta)
         if form.is_valid():
             form.save()
-            return redirect("detalle_herramienta")
-        else:
-            form = HerramientaForm(instance=Herramienta)
-        return render(request, 'herramientas/editar.html')
+            reverse('herramientas:detalle_herramienta', kwargs={'pk': herramienta.pk})
+
+    else:
+        form = HerramientaForm(instance=herramienta)
+
+    return render(request, 'herramientas/editar.html', {
+        'form': form,
+        'herramienta': herramienta
+    })
     
 def eliminar_herramienta(request, pk):
     herramienta = get_object_or_404(Herramienta, pk=pk)
 
-    if Herramienta.usuario != request.user :
+    if herramienta.propietario != request.user :
         return HttpResponseForbidden("No puedes eliminar la herramienta")
     
     if request.method == 'POST':
         herramienta.delete()
-        return redirect("detalle_herramienta")
-    return render(request, 'herramientas/confirmar_eliminacion.html')
+        return redirect('herramientas:lista_herramientas')
+    return render(request, 'herramientas/confirmar_eliminacion.html', {'herramienta': herramienta})
