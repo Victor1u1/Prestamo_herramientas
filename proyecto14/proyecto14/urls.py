@@ -16,22 +16,24 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.contrib.auth.views import LogoutView
-from django.conf.urls.static import static
+from django.contrib.auth import views as auth_views
+from usuarios.views import registro_view, dashboard_view, error_view
 from django.conf import settings
-from usuarios.views import error_view
+from django.conf.urls.static import static
 
 urlpatterns = [
-    path('accounts/', include('django.contrib.auth.urls')),
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls),  # Panel de administración estándar de Django
+    path('login/', auth_views.LoginView.as_view(template_name='usuarios/login.html'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
+    path('registro/', registro_view, name='registro'),
+    path('dashboard/', dashboard_view, name='dashboard'),
+    path('error/', error_view, name='error'),
     path('usuarios/', include('usuarios.urls')),
-    path('herramientas/', include('herramientas.urls', namespace='herramientas')),
-    path('prestamos/', include('prestamos.urls', namespace='prestamos')),
+    path('herramientas/', include('herramientas.urls')),
+    path('prestamos/', include('prestamos.urls')),
     path('calificaciones/', include('calificaciones.urls')),
-
-    path('logout/', LogoutView.as_view(next_page='login'), name='logout'),
-    path('error/', error_view, name='error'), #agrego views url en usuarios
-    
+    path('', dashboard_view, name='home'),
 ]
+
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
