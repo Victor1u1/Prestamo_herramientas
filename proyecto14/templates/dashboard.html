@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Bienvenido al Sistema de Préstamos de Herramientas</h2>
+
+<div>
+    <h3>Resumen</h3>
+    <ul>
+        <li><a href="{% url 'lista_herramientas' %}">Ver todas las herramientas disponibles</a></li>
+        <li><a href="{% url 'mis_herramientas' %}">Administrar mis herramientas</a></li>
+        <li><a href="{% url 'mis_prestamos' %}">Ver mis préstamos solicitados</a></li>
+        <li><a href="{% url 'prestamos_recibidos' %}">Ver préstamos recibidos</a></li>
+    </ul>
+</div>
+{% endblock %}
