@@ -1,14 +1,11 @@
-# herramientas/urls.py
-
 from django.urls import path
 from . import views
 
-app_name = 'herramientas'
-
 urlpatterns = [
-    path('', views.lista_herramientas, name='lista_herramientas'),       # lista y búsqueda
-    path('crear/', views.crear_herramienta, name='crear_herramienta'),    # formulario para crear
-    path('<int:pk>/', views.detalle_herramienta, name='detalle_herramienta'),  # detalle
-    path('herramienta/<int:pk>/editar/', views.editar_herramienta, name='editar_herramienta'),
-    path('herramienta/<int:pk>/eliminar/', views.eliminar_herramienta, name='eliminar_herramienta'),
+    path('', views.lista_herramientas_view, name='lista_herramientas'),
+    path('mis-herramientas/', views.mis_herramientas_view, name='mis_herramientas'),
+    path('agregar/', views.agregar_herramienta_view, name='agregar_herramienta'),
+    path('editar/<int:herramienta_id>/', views.editar_herramienta_view, name='editar_herramienta'),
+    path('eliminar/<int:herramienta_id>/', views.eliminar_herramienta_view, name='eliminar_herramienta'),
+    path('detalle/<int:herramienta_id>/', views.detalle_herramienta_view, name='detalle_herramienta'),
 ]

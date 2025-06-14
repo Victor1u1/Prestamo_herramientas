@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Editar Herramienta</h2>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    
+    {% if herramienta.imagen %}
+    <p>Imagen actual:</p>
+    <img src="{{ herramienta.imagen.url }}" alt="{{ herramienta.nombre }}" style="max-width: 200px; max-height: 200px;">
+    {% endif %}
+    
+    <button type="submit">Actualizar</button>
+</form>
+
+<a href="{% url 'mis_herramientas' %}">Volver a mis herramientas</a>
+{% endblock %}

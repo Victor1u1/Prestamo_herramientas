@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Mis Herramientas</h2>
+
+<a href="{% url 'agregar_herramienta' %}">Agregar nueva herramienta</a>
+
+{% if herramientas %}
+<table>
+    <thead>
+        <tr>
+            <th>Imagen</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Estado</th>
+            <th>Disponibilidad</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for herramienta in herramientas %}
+        <tr>
+            <td>
+                {% if herramienta.imagen %}
+                <img src="{{ herramienta.imagen.url }}" alt="{{ herramienta.nombre }}" style="max-width: 100px; max-height: 100px;">
+                {% else %}
+                <span>Sin imagen</span>
+                {% endif %}
+            </td>
+            <td>{{ herramienta.nombre }}</td>
+            <td>{{ herramienta.descripcion|truncatechars:100 }}</td>
+            <td>{{ herramienta.get_estado_display }}</td>
+            <td>{{ herramienta.get_disponibilidad_display }}</td>
+            <td>
+                <a href="{% url 'editar_herramienta' herramienta.id %}">Editar</a>
+                <a href="{% url 'eliminar_herramienta' herramienta.id %}">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No tienes herramientas registradas.</p>
+{% endif %}
+{% endblock %}

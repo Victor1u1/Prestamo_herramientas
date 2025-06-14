@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Herramientas Disponibles</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Imagen</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Estado</th>
+            <th>Disponibilidad</th>
+            <th>Propietario</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for herramienta in herramientas %}
+        <tr>
+            <td>
+                {% if herramienta.imagen %}
+                <img src="{{ herramienta.imagen.url }}" alt="{{ herramienta.nombre }}" style="max-width: 100px; max-height: 100px;">
+                {% else %}
+                <span>Sin imagen</span>
+                {% endif %}
+            </td>
+            <td>{{ herramienta.nombre }}</td>
+            <td>{{ herramienta.descripcion|truncatechars:100 }}</td>
+            <td>{{ herramienta.get_estado_display }}</td>
+            <td>{{ herramienta.get_disponibilidad_display }}</td>
+            <td>{{ herramienta.propietario.username }}</td>
+            <td>
+                <a href="{% url 'detalle_herramienta' herramienta.id %}">Ver detalles</a>
+                {% if herramienta.disponibilidad == 'disponible' and herramienta.propietario != user %}
+                <a href="{% url 'solicitar_prestamo' herramienta.id %}">Solicitar préstamo</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

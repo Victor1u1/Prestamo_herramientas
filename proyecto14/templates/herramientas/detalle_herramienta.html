@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Detalles de la Herramienta</h2>
+
+<div>
+    <h3>{{ herramienta.nombre }}</h3>
+    
+    {% if herramienta.imagen %}
+    <div>
+        <img src="{{ herramienta.imagen.url }}" alt="{{ herramienta.nombre }}" style="max-width: 300px; max-height: 300px;">
+    </div>
+    {% endif %}
+    
+    <p><strong>Descripción:</strong> {{ herramienta.descripcion }}</p>
+    <p><strong>Estado:</strong> {{ herramienta.get_estado_display }}</p>
+    <p><strong>Disponibilidad:</strong> {{ herramienta.get_disponibilidad_display }}</p>
+    <p><strong>Propietario:</strong> {{ herramienta.propietario.username }}</p>
+    
+    {% if herramienta.disponibilidad == 'disponible' and herramienta.propietario != user %}
+    <a href="{% url 'solicitar_prestamo' herramienta.id %}">Solicitar préstamo</a>
+    {% endif %}
+    
+    <a href="{% url 'calificaciones_usuario' herramienta.propietario.id %}">Ver calificaciones del propietario</a>
+    <a href="{% url 'lista_herramientas' %}">Volver a la lista de herramientas</a>
+</div>
+{% endblock %}
