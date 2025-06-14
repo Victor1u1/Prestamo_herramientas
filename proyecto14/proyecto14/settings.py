@@ -135,8 +135,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Auth settings
 AUTH_USER_MODEL = 'usuarios.Usuario'
-LOGOUT_REDIRECT_URL = '/usuarios/login/'
-LOGIN_URL = '/usuarios/login/'  # La URL donde tienes tu login_view
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/dashboard/'
+LOGOUT_REDIRECT_URL = '/login/'
 
 # URLs que no requieren autenticación
 LOGIN_EXEMPT_URLS = [
