@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Solicitar Préstamo</h2>
+
+<div>
+    <h3>{{ herramienta.nombre }}</h3>
+    <p><strong>Descripción:</strong> {{ herramienta.descripcion }}</p>
+    <p><strong>Estado:</strong> {{ herramienta.get_estado_display }}</p>
+    <p><strong>Propietario:</strong> {{ herramienta.propietario.username }}</p>
+</div>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Enviar Solicitud</button>
+</form>
+
+<a href="{% url 'detalle_herramienta' herramienta.id %}">Volver a detalles de la herramienta</a>
+{% endblock %}

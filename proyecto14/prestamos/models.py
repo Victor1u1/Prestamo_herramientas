@@ -33,4 +33,3 @@ class Prestamo(models.Model):
             self.herramienta.save()
         
         super().save(*args, **kwargs)
-

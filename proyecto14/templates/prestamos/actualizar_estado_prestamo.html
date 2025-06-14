@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Responder Solicitud de Préstamo</h2>
+
+<div>
+    <p><strong>Herramienta:</strong> {{ prestamo.herramienta.nombre }}</p>
+    <p><strong>Solicitante:</strong> {{ prestamo.prestatario.username }}</p>
+    <p><strong>Fecha de solicitud:</strong> {{ prestamo.fecha_solicitud|date:"d/m/Y H:i" }}</p>
+    <p><strong>Fecha de inicio:</strong> {{ prestamo.fecha_inicio|date:"d/m/Y" }}</p>
+    <p><strong>Fecha de fin:</strong> {{ prestamo.fecha_fin|date:"d/m/Y" }}</p>
+</div>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Actualizar Estado</button>
+</form>
+
+<a href="{% url 'prestamos_recibidos' %}">Volver a préstamos recibidos</a>
+{% endblock %}

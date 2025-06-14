@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Préstamos Recibidos</h2>
+
+{% if prestamos %}
+<table>
+    <thead>
+        <tr>
+            <th>Herramienta</th>
+            <th>Solicitante</th>
+            <th>Fecha de solicitud</th>
+            <th>Fecha de inicio</th>
+            <th>Fecha de fin</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for prestamo in prestamos %}
+        <tr>
+            <td>{{ prestamo.herramienta.nombre }}</td>
+            <td>{{ prestamo.prestatario.username }}</td>
+            <td>{{ prestamo.fecha_solicitud|date:"d/m/Y H:i" }}</td>
+            <td>{{ prestamo.fecha_inicio|date:"d/m/Y" }}</td>
+            <td>{{ prestamo.fecha_fin|date:"d/m/Y" }}</td>
+            <td>{{ prestamo.get_estado_display }}</td>
+            <td>
+                {% if prestamo.estado != 'finalizado' and prestamo.estado != 'rechazado' %}
+                <a href="{% url 'actualizar_estado_prestamo' prestamo.id %}">Cambiar estado</a>
+                {% endif %}
+                {% if prestamo.estado == 'finalizado' %}
+                <a href="{% url 'calificar_prestamo' prestamo.id %}">Calificar</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No tienes préstamos recibidos.</p>
+{% endif %}
+{% endblock %}

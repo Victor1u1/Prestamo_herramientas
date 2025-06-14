@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Cancelar Solicitud de Préstamo</h2>
+
+<p>¿Estás seguro de que deseas cancelar la solicitud de préstamo para la herramienta "{{ prestamo.herramienta.nombre }}"?</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Sí, cancelar</button>
+</form>
+
+<a href="{% url 'mis_prestamos' %}">No, volver a mis préstamos</a>
+{% endblock %}

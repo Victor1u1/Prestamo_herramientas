@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Finalizar Préstamo</h2>
+
+<p>¿Estás seguro de que deseas finalizar el préstamo de la herramienta "{{ prestamo.herramienta.nombre }}" a {{ prestamo.prestatario.username }}?</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Sí, finalizar</button>
+</form>
+
+<a href="{% url 'prestamos_recibidos' %}">No, volver a préstamos recibidos</a>
+{% endblock %}
