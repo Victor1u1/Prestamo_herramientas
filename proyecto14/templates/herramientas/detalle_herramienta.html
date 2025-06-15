@@ -1,27 +1,49 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Detalles de la Herramienta</h2>
+<div class="container mt-4" style="background-color: #f4eef4; color: #181018;">
+    <h2 class="mb-4">Detalles de la Herramienta</h2>
 
-<div>
-    <h3>{{ herramienta.nombre }}</h3>
-    
-    {% if herramienta.imagen %}
-    <div>
-        <img src="{{ herramienta.imagen.url }}" alt="{{ herramienta.nombre }}" style="max-width: 300px; max-height: 300px;">
+    <div class="card border-0 shadow-lg" style="background-color: #f4eef4; border-color: #d9c2d9;">
+        <div class="card-body">
+            <h3 class="card-title">{{ herramienta.nombre }}</h3>
+            
+            {% if herramienta.imagen %}
+            <div class="mb-3 text-center">
+                <img src="{{ herramienta.imagen.url }}" alt="{{ herramienta.nombre }}" class="img-fluid rounded" style="max-width: 300px; max-height: 300px; border: 2px solid #d9c2d9;">
+            </div>
+            {% endif %}
+            
+            <div class="mb-3">
+                <p><strong>Descripción:</strong> {{ herramienta.descripcion }}</p>
+                <p><strong>Estado:</strong> {{ herramienta.get_estado_display }}</p>
+                <p><strong>Disponibilidad:</strong> {{ herramienta.get_disponibilidad_display }}</p>
+                <p><strong>Propietario:</strong> {{ herramienta.propietario.username }}</p>
+            </div>
+            
+            <div class="d-flex flex-wrap gap-2 mt-4">
+                {% if herramienta.disponibilidad == 'disponible' and herramienta.propietario != user %}
+                <a href="{% url 'solicitar_prestamo' herramienta.id %}" class="btn" style="background-color: #c6a7c6; color: #181018; border-color: #c6a7c6;">Solicitar préstamo</a>
+                {% endif %}
+                
+                <a href="{% url 'calificaciones_usuario' herramienta.propietario.id %}" class="btn" style="background-color: #623f44; color: white; border-color: #623f44;">Ver calificaciones del propietario</a>
+                <a href="{% url 'lista_herramientas' %}" class="btn" style="background-color: #a67c75; color: white; border-color: #a67c75;">Volver a la lista</a>
+            </div>
+        </div>
     </div>
-    {% endif %}
-    
-    <p><strong>Descripción:</strong> {{ herramienta.descripcion }}</p>
-    <p><strong>Estado:</strong> {{ herramienta.get_estado_display }}</p>
-    <p><strong>Disponibilidad:</strong> {{ herramienta.get_disponibilidad_display }}</p>
-    <p><strong>Propietario:</strong> {{ herramienta.propietario.username }}</p>
-    
-    {% if herramienta.disponibilidad == 'disponible' and herramienta.propietario != user %}
-    <a href="{% url 'solicitar_prestamo' herramienta.id %}">Solicitar préstamo</a>
-    {% endif %}
-    
-    <a href="{% url 'calificaciones_usuario' herramienta.propietario.id %}">Ver calificaciones del propietario</a>
-    <a href="{% url 'lista_herramientas' %}">Volver a la lista de herramientas</a>
 </div>
+
+<style>
+    body {
+        background-color: #181018;
+    }
+    
+    .btn:hover {
+        opacity: 0.9;
+    }
+    
+    .card {
+        border-radius: 10px;
+    }
+</style>
 {% endblock %}

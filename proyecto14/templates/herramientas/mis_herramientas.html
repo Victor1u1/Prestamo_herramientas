@@ -1,45 +1,112 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Mis Herramientas</h2>
+<div class="container py-4" style="background-color: #f4eef4; color: #181018;">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Mis Herramientas</h2>
+        <a href="{% url 'agregar_herramienta' %}" class="btn" style="background-color: #c6a7c6; color: #181018;">
+            <i class="bi bi-plus-circle"></i> Agregar herramienta
+        </a>
+    </div>
 
-<a href="{% url 'agregar_herramienta' %}">Agregar nueva herramienta</a>
+    {% if herramientas %}
+    <div class="card border-0 shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead style="background-color: #c6a7c6; color: #181018;">
+                        <tr>
+                            <th>Imagen</th>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Estado</th>
+                            <th>Disponibilidad</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for herramienta in herramientas %}
+                        <tr>
+                            <td>
+                                {% if herramienta.imagen %}
+                                <img src="{{ herramienta.imagen.url }}" alt="{{ herramienta.nombre }}" 
+                                     class="img-thumbnail" style="max-width: 80px; max-height: 80px; border-color: #a67c75;">
+                                {% else %}
+                                <span class="text-muted">Sin imagen</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ herramienta.nombre }}</td>
+                            <td>{{ herramienta.descripcion|truncatechars:100 }}</td>
+                            <td>{{ herramienta.get_estado_display }}</td>
+                            <td>
+                                <span class="badge" style="background-color: {% if herramienta.disponibilidad == 'disponible' %}#a67c75{% else %}#623f44{% endif %}; color: white;">
+                                    {{ herramienta.get_disponibilidad_display }}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <a href="{% url 'editar_herramienta' herramienta.id %}" class="btn btn-sm" style="background-color: #c6a7c6; color: #181018;">
+                                        <i class="bi bi-pencil"></i> Editar
+                                    </a>
+                                    <a href="{% url 'eliminar_herramienta' herramienta.id %}" class="btn btn-sm" style="background-color: #623f44; color: white;">
+                                        <i class="bi bi-trash"></i> Eliminar
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="card border-0 shadow text-center py-5" style="background-color: #f4eef4;">
+        <div class="card-body">
+            <p class="mb-4">No tienes herramientas registradas.</p>
+            <a href="{% url 'agregar_herramienta' %}" class="btn" style="background-color: #c6a7c6; color: #181018;">
+                <i class="bi bi-plus-circle"></i> Agregar mi primera herramienta
+            </a>
+        </div>
+    </div>
+    {% endif %}
+</div>
 
-{% if herramientas %}
-<table>
-    <thead>
-        <tr>
-            <th>Imagen</th>
-            <th>Nombre</th>
-            <th>Descripción</th>
-            <th>Estado</th>
-            <th>Disponibilidad</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for herramienta in herramientas %}
-        <tr>
-            <td>
-                {% if herramienta.imagen %}
-                <img src="{{ herramienta.imagen.url }}" alt="{{ herramienta.nombre }}" style="max-width: 100px; max-height: 100px;">
-                {% else %}
-                <span>Sin imagen</span>
-                {% endif %}
-            </td>
-            <td>{{ herramienta.nombre }}</td>
-            <td>{{ herramienta.descripcion|truncatechars:100 }}</td>
-            <td>{{ herramienta.get_estado_display }}</td>
-            <td>{{ herramienta.get_disponibilidad_display }}</td>
-            <td>
-                <a href="{% url 'editar_herramienta' herramienta.id %}">Editar</a>
-                <a href="{% url 'eliminar_herramienta' herramienta.id %}">Eliminar</a>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-{% else %}
-<p>No tienes herramientas registradas.</p>
-{% endif %}
+<style>
+    body {
+        background-color: #181018;
+    }
+    
+    .table {
+        --bs-table-bg: transparent;
+        --bs-table-striped-bg: rgba(198, 167, 198, 0.1);
+        --bs-table-hover-bg: rgba(166, 124, 117, 0.1);
+    }
+    
+    .btn {
+        transition: all 0.2s ease;
+    }
+    
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .btn[style*="#c6a7c6"]:hover {
+        background-color: #b896b8 !important;
+    }
+    
+    .btn[style*="#623f44"]:hover {
+        background-color: #54353a !important;
+    }
+    
+    .badge {
+        font-weight: 500;
+        padding: 0.35em 0.65em;
+    }
+    
+    .card {
+        border-radius: 10px;
+    }
+</style>
 {% endblock %}

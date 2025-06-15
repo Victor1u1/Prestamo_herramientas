@@ -1,43 +1,111 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Herramientas Disponibles</h2>
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-4" >Herramientas Disponibles</h2>
+    </div>
+    <div class="card border-0 shadow" style="background-color: #f4eef4; border: 1px solid #d9c2d9;">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead style="background-color: #c6a7c6; color: #181018;">
+                        <tr>
+                            <th scope="col">Imagen</th>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Descripción</th>
+                            <th scope="col">Estado</th>
+                            <th scope="col">Disponibilidad</th>
+                            <th scope="col">Propietario</th>
+                            <th scope="col">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for herramienta in herramientas %}
+                        <tr style="border-bottom: 1px solid #d9c2d9;">
+                            <td>
+                                {% if herramienta.imagen %}
+                                <img src="{{ herramienta.imagen.url }}" alt="{{ herramienta.nombre }}" 
+                                     class="img-thumbnail" style="max-width: 80px; max-height: 80px; border-color: #a67c75;">
+                                {% else %}
+                                <span class="text-muted">Sin imagen</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ herramienta.nombre }}</td>
+                            <td>{{ herramienta.descripcion|truncatechars:100 }}</td>
+                            <td>{{ herramienta.get_estado_display }}</td>
+                            <td>
+                                <span class="badge rounded-pill" 
+                                      style="background-color: {% if herramienta.disponibilidad == 'disponible' %}#c6a7c6{% else %}#623f44{% endif %}; color: #181018;">
+                                    {{ herramienta.get_disponibilidad_display }}
+                                </span>
+                            </td>
+                            <td>{{ herramienta.propietario.username }}</td>
+                            <td>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <a href="{% url 'detalle_herramienta' herramienta.id %}" 
+                                       class="btn btn-sm" style="background-color: #a67c75; color: white;">
+                                        <i class="bi bi-eye-fill"></i> Detalles
+                                    </a>
+                                    {% if herramienta.disponibilidad == 'disponible' and herramienta.propietario != user %}
+                                    <a href="{% url 'solicitar_prestamo' herramienta.id %}" 
+                                       class="btn btn-sm" style="background-color: #623f44; color: white;">
+                                        <i class="bi bi-hand-thumbs-up"></i> Solicitar
+                                    </a>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 
-<table>
-    <thead>
-        <tr>
-            <th>Imagen</th>
-            <th>Nombre</th>
-            <th>Descripción</th>
-            <th>Estado</th>
-            <th>Disponibilidad</th>
-            <th>Propietario</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for herramienta in herramientas %}
-        <tr>
-            <td>
-                {% if herramienta.imagen %}
-                <img src="{{ herramienta.imagen.url }}" alt="{{ herramienta.nombre }}" style="max-width: 100px; max-height: 100px;">
-                {% else %}
-                <span>Sin imagen</span>
-                {% endif %}
-            </td>
-            <td>{{ herramienta.nombre }}</td>
-            <td>{{ herramienta.descripcion|truncatechars:100 }}</td>
-            <td>{{ herramienta.get_estado_display }}</td>
-            <td>{{ herramienta.get_disponibilidad_display }}</td>
-            <td>{{ herramienta.propietario.username }}</td>
-            <td>
-                <a href="{% url 'detalle_herramienta' herramienta.id %}">Ver detalles</a>
-                {% if herramienta.disponibilidad == 'disponible' and herramienta.propietario != user %}
-                <a href="{% url 'solicitar_prestamo' herramienta.id %}">Solicitar préstamo</a>
-                {% endif %}
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<style>
+    body {
+        background-color: #181018;
+    }
+    
+    .table {
+        --bs-table-bg: transparent;
+        --bs-table-striped-bg: rgba(198, 167, 198, 0.1);
+        --bs-table-hover-bg: rgba(166, 124, 117, 0.1);
+    }
+    
+    .table th {
+        font-weight: 600;
+    }
+    
+    .btn {
+        transition: all 0.2s ease;
+        font-size: 0.875rem;
+        padding: 0.25rem 0.5rem;
+    }
+    
+    .btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .btn[style*="#a67c75"]:hover {
+        background-color: #956b64 !important;
+    }
+    
+    .btn[style*="#623f44"]:hover {
+        background-color: #54353a !important;
+    }
+    
+    .badge {
+        font-weight: 500;
+        padding: 0.35em 0.65em;
+    }
+    
+    .card {
+        border-radius: 12px;
+        overflow: hidden;
+    }
+</style>
 {% endblock %}
