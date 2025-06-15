@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'usuarios',
     'herramientas',
     'prestamos',
-      'calificaciones',
+    'calificaciones',
 ]
 
 MIDDLEWARE = [

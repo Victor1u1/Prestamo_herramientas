@@ -71,16 +71,19 @@
 
         .navbar-custom {
             background-color: #623f44 !important;
-            height: 56px;
+            height: 75px;
             z-index: 1050;
         }
 
         .sidebar-toggle-btn {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             background: transparent;
             border: none;
             color: white;
             padding: 0;
+            width: 40px;
+            height: 40px;
+            line-height: 1;
         }
 
         .sidebar-toggle-btn:focus {
@@ -93,11 +96,68 @@
             overflow: hidden;
             text-overflow: ellipsis;
             max-width: 200px;
+            font-size: 1rem;
+        }
+
+        .navbar-role {
+            font-size: 0.9rem;
+        }
+
+        .btn-logout-sm {
+            font-size: 0.85rem;
+            padding: 0.25rem 0.5rem;
+        }
+
+        .user-logout-container {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            flex-wrap: nowrap;
         }
 
         @media (max-width: 575.98px) {
             .navbar-user {
                 max-width: 120px !important;
+                font-size: 0.8rem;
+            }
+
+            .navbar-role {
+                max-width: 120px !important;
+                font-size: 0.7rem;
+            }
+
+            .btn-logout-sm {
+                padding: 0.15rem 0.4rem;
+                font-size: 0.6rem;
+            }
+
+            .user-logout-container {
+                flex-wrap: nowrap !important;
+                gap: 0.3rem !important;
+                align-items: center !important;
+            }
+
+            .sidebar-toggle-btn {
+                font-size: 1rem; 
+                padding: 0;
+                width: 32px;
+                height: 32px;
+                line-height: 1;
+            }
+
+            .navbar-brand {
+                font-size: 0.85rem;
+            }
+            .navbar-brand i {
+                font-size: 1rem; 
+            }
+
+            .sidebar .d-flex.justify-content-between > span {
+                font-size: 0.75rem;
+            }
+
+            .sidebar .d-flex.justify-content-between > i.bi-chevron-down {
+                font-size: 0.75rem;
             }
         }
 
@@ -145,14 +205,14 @@
             </div>
 
             {% if user.is_authenticated %}
-            <div class="d-flex align-items-center gap-3 flex-wrap justify-content-end" style="min-width: 180px; max-width: 300px;">
+            <div class="user-logout-container" style="min-width: 180px; max-width: 300px; justify-content: flex-end;">
                 <span class="navbar-user text-white d-flex align-items-center text-truncate" style="max-width: 200px;">
                     <i class="bi bi-person-circle me-1"></i>
-                    {{ user.username }} ({{ user.get_rol_display }})
+                    {{ user.username }} <span class="navbar-role">({{ user.get_rol_display }})</span>
                 </span>
                 <form method="post" action="{% url 'logout' %}" class="m-0">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-outline-light btn-sm">Cerrar sesión</button>
+                    <button type="submit" class="btn btn-outline-light btn-sm btn-logout-sm">Cerrar sesión</button>
                 </form>
             </div>
             {% endif %}
