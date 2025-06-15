@@ -1,30 +1,92 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro - Sistema de Préstamos de Herramientas</title>
-</head>
-<body>
-    <div>
-        <h1>Sistema de Préstamos de Herramientas entre Vecinos</h1>
-        <h2>Registro de Usuario</h2>
-        
-        {% if messages %}
-        <div>
-            {% for message in messages %}
-            <div>{{ message }}</div>
-            {% endfor %}
-        </div>
-        {% endif %}
-        
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Registrarse</button>
-        </form>
-        
-        <p>¿Ya tienes una cuenta? <a href="{% url 'login' %}">Inicia sesión aquí</a></p>
+{% extends "usuarios/base.html" %}
+
+{% block title %}Registro - Sistema de Préstamos de Herramientas{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        background-color: #181018;
+        color: #fff;
+        font-family: Arial, sans-serif;
+    }
+
+    .form-label {
+        font-weight: 500;
+        color: #fff;
+    }
+
+    .btn-registro {
+        background-color: #623f44;
+        border: none;
+        color: #fff;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .btn-registro:hover {
+        background-color: #a67c75;
+        transform: scale(1.05);
+    }
+
+    .registro-title {
+        color: #fff;
+    }
+
+    .input-group-text {
+        background-color: #a67c75;
+        color: #fff;
+        border: none;
+    }
+
+    .form-control {
+        border: none;
+        background-color: #fff;
+    }
+
+    .form-container {
+        max-width: 320px;
+        margin: 60px auto;
+        padding: 30px;
+
+        background: #ffffff20;  
+        color: #fff;
+
+        border-radius: 12px;
+        box-shadow: 0 0 20px rgb(0 0 0 / 0.7);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid #ffffff33;
+
+        transition: transform 0.3s ease;
+    }
+
+    .form-container:hover {
+        transform: translateY(-5px);
+    }
+</style>
+
+<h1 class="text-center registro-title mt-4">Préstamo de Herramientas</h1>
+<h2 class="text-center mb-4 fs-5">Registro de Usuario</h2>
+
+{% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-info text-center mb-3">
+        {{ message }}
     </div>
-</body>
-</html>
+    {% endfor %}
+{% endif %}
+
+<div class="form-container">
+    <form method="post">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit" class="btn btn-registro w-100">Registrarse</button>
+    </form>
+
+    <p class="mt-4 text-center">
+        ¿Ya tienes una cuenta? <a href="{% url 'login' %}">Inicia sesión aquí</a>
+    </p>
+</div>
+
+{% endblock %}

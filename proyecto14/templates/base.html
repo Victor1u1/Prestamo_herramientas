@@ -1,64 +1,255 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Sistema de Préstamos de Herramientas entre Vecinos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+
+    <style>
+        body {
+            background-color: #2e1a26;
+            color: #cccccc;
+            padding-top: 56px; 
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar {
+            background-color: #a67c75;
+            min-height: calc(100vh - 56px);
+            position: fixed;
+            top: 56px;
+            bottom: 0;
+            overflow-y: auto;
+            padding-top: 1rem;
+            width: 240px;
+            transition: transform 0.3s ease-in-out;
+            z-index: 1040;
+        }
+
+        .sidebar.collapsed {
+            transform: translateX(-100%);
+        }
+
+        @media (min-width: 992px) {
+            .sidebar {
+                transform: none !important;
+                position: fixed;
+            }
+        }
+
+        .sidebar a {
+            color: #181018;
+            text-decoration: none;
+            display: block;
+            padding: 10px 15px;
+        }
+
+        .sidebar a:hover {
+            background-color: #c6a7c6;
+        }
+
+        .sidebar hr,
+        .sidebar strong {
+            color: #000000;
+            margin: 0.5rem 1rem;
+        }
+
+        .sidebar .collapse a {
+            font-size: 0.95rem;
+            padding-left: 25px;
+            color: #dbdbdb;
+        }
+
+        .sidebar .collapse a:hover {
+            background-color: #c6a7c6;
+        }
+
+        .navbar-custom {
+            background-color: #623f44 !important;
+            height: 56px;
+            z-index: 1050;
+        }
+
+        .sidebar-toggle-btn {
+            font-size: 1.5rem;
+            background: transparent;
+            border: none;
+            color: white;
+            padding: 0;
+        }
+
+        .sidebar-toggle-btn:focus {
+            outline: none;
+            box-shadow: 0 0 0 0.25rem rgba(255,255,255,.5);
+        }
+
+        .navbar-user {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 200px;
+        }
+
+        @media (max-width: 575.98px) {
+            .navbar-user {
+                max-width: 120px !important;
+            }
+        }
+
+        @media (min-width: 992px) {
+            main.col {
+                margin-left: 240px;
+            }
+        }
+
+        .footer-custom {
+            background-color: #623f44;
+            color: #ffffff;
+            margin-top: auto;
+            padding: 1.5rem 0;
+            text-align: center;
+        }
+
+        .footer-custom hr {
+            border-top: 1px solid #444;
+            margin: 1rem 0;
+        }
+
+        .footer-custom a {
+            color: #ffffff;
+        }
+
+        .footer-custom a:hover {
+            color: #cccccc;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <div>
-            <h1>Sistema de Préstamos de Herramientas</h1>
-        </div>
-        {% if user.is_authenticated %}
-        <div>
-            <span>{{ user.username }} ({{ user.get_rol_display }})</span>
-            <form method="post" action="{% url 'logout' %}" style="display: inline;">
-                {% csrf_token %}
-                <button type="submit">Cerrar sesión</button>
-            </form>
-        </div>
-        {% endif %}
-    </header>
 
-    <div>
-        <div>
-            <!-- Panel de navegación lateral -->
+    <nav class="navbar navbar-dark navbar-custom shadow-sm fixed-top">
+        <div class="container-fluid d-flex justify-content-between align-items-center flex-wrap">
+
+            <div class="d-flex align-items-center gap-2">
+                <button class="sidebar-toggle-btn btn btn-dark d-lg-none" id="sidebarToggle" aria-label="Toggle sidebar">
+                    <i class="bi bi-list"></i>
+                </button>
+            
+                <span class="navbar-brand mb-0 h1 d-flex align-items-center">
+                    <i class="bi bi-tools me-2"></i> Préstamo de Herramientas
+                </span>
+            </div>
+
             {% if user.is_authenticated %}
-            <nav>
-                <ul>
-                    <li><a href="{% url 'dashboard' %}">Inicio</a></li>
-                    <li><a href="{% url 'perfil' %}">Mi Perfil</a></li>
-                    <li><a href="{% url 'lista_herramientas' %}">Herramientas Disponibles</a></li>
-                    <li><a href="{% url 'mis_herramientas' %}">Mis Herramientas</a></li>
-                    <li><a href="{% url 'agregar_herramienta' %}">Agregar Herramienta</a></li>
-                    <li><a href="{% url 'mis_prestamos' %}">Mis Préstamos</a></li>
-                    <li><a href="{% url 'prestamos_recibidos' %}">Préstamos Recibidos</a></li>
-                    <li><a href="{% url 'mis_calificaciones' %}">Mis Calificaciones</a></li>
-                    {% if user.is_admin %}
-                    <li><hr></li>
-                    <li><strong>Administración</strong></li>
-                    <li><a href="{% url 'lista_usuarios' %}">Gestionar Usuarios</a></li>
-                    <li><a href="/admin/" target="_blank">Panel de Administración Django</a></li>
-                    {% endif %}
-                </ul>
-            </nav>
-            {% endif %}
-        </div>
-
-        <div>
-            <!-- Mensajes de alerta -->
-            {% if messages %}
-            <div>
-                {% for message in messages %}
-                <div>{{ message }}</div>
-                {% endfor %}
+            <div class="d-flex align-items-center gap-3 flex-wrap justify-content-end" style="min-width: 180px; max-width: 300px;">
+                <span class="navbar-user text-white d-flex align-items-center text-truncate" style="max-width: 200px;">
+                    <i class="bi bi-person-circle me-1"></i>
+                    {{ user.username }} ({{ user.get_rol_display }})
+                </span>
+                <form method="post" action="{% url 'logout' %}" class="m-0">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-light btn-sm">Cerrar sesión</button>
+                </form>
             </div>
             {% endif %}
-
-            <!-- Contenido principal -->
-            {% block content %}{% endblock %}
         </div>
-    </div>
+    </nav>
+
+    {% if user.is_authenticated %}
+    <aside class="sidebar collapsed" id="sidebar">
+        <nav>
+            <a href="{% url 'dashboard' %}"><i class="bi bi-house-door me-2"></i>Inicio</a>
+            <a href="{% url 'perfil' %}"><i class="bi bi-person me-2"></i>Mi Perfil</a>
+
+            <a class="d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#submenuHerramientas" role="button" aria-expanded="false" aria-controls="submenuHerramientas">
+                <span><i class="bi bi-tools me-2"></i>Mis Herramientas</span>
+                <i class="bi bi-chevron-down small"></i>
+            </a>
+            <div class="collapse ps-2" id="submenuHerramientas">
+                <a href="{% url 'lista_herramientas' %}" class="d-block py-1">Herramientas Disponibles</a>
+                <a href="{% url 'mis_herramientas' %}" class="d-block py-1">Ver Mis Herramientas</a>
+                <a href="{% url 'agregar_herramienta' %}" class="d-block py-1">Agregar Herramienta</a>
+            </div>
+
+            <a class="d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#submenuPrestamos" role="button" aria-expanded="false" aria-controls="submenuPrestamos">
+                <span><i class="bi bi-upload me-2"></i>Mis Préstamos</span>
+                <i class="bi bi-chevron-down small"></i>
+            </a>
+            <div class="collapse ps-2" id="submenuPrestamos">
+                <a href="{% url 'mis_prestamos' %}" class="d-block py-1">Mis Préstamos</a>
+                <a href="{% url 'prestamos_recibidos' %}" class="d-block py-1">Préstamos Recibidos</a>
+            </div>
+
+            <a href="{% url 'mis_calificaciones' %}"><i class="bi bi-star me-2"></i>Calificaciones</a>
+
+            {% if user.is_admin %}
+            <hr>
+            <strong class="ms-3">Administración</strong>
+            <a href="{% url 'lista_usuarios' %}"><i class="bi bi-people me-2"></i>Gestionar Usuarios</a>
+            <a href="/admin/" target="_blank"><i class="bi bi-shield-lock me-2"></i>Panel de Django</a>
+            {% endif %}
+        </nav>
+    </aside>
+    {% endif %}
+
+    <main class="col px-4 py-4">
+        {% if messages %}
+        <div class="mb-3">
+            {% for message in messages %}
+            <div class="alert alert-info d-flex align-items-center" role="alert">
+                <i class="bi bi-info-circle-fill me-2"></i> {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer-custom">
+        <div class="container">
+            <hr class="my-4" />
+            <p class="mb-2">© 2025 Comunidad Vecinal - Todos los derechos reservados.</p>
+
+            <div class="d-flex justify-content-center mb-3">
+                <a href="#" class="mx-2" aria-label="Facebook">
+                    <i class="bi bi-facebook" style="font-size: 1.5rem;"></i>
+                </a>
+                <a href="#" class="mx-2" aria-label="Instagram">
+                    <i class="bi bi-instagram" style="font-size: 1.5rem;"></i>
+                </a>
+                <a href="#" class="mx-2" aria-label="Twitter">
+                    <i class="bi bi-twitter" style="font-size: 1.5rem;"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      const sidebar = document.getElementById('sidebar');
+      const toggleBtn = document.getElementById('sidebarToggle');
+
+      toggleBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('collapsed');
+      });
+
+      function handleResize() {
+        if(window.innerWidth >= 992) {
+          sidebar.classList.remove('collapsed');
+        } else {
+          sidebar.classList.add('collapsed');
+        }
+      }
+
+      window.addEventListener('resize', handleResize);
+      window.addEventListener('load', handleResize);
+    </script>
+
 </body>
 </html>
