@@ -1,43 +1,124 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Mis Préstamos Solicitados</h2>
+<div class="py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <!-- Encabezado con icono -->
+            <div class="d-flex align-items-center mb-4">
+                <h1 class="mb-0 me-3"><i class="bi bi-clipboard2-pulse text-primary"></i></h1>
+                <div>
+                    <h2 class="mb-0">Mis Préstamos Solicitados</h2>
+                    <p class="text-muted">Historial de todas las herramientas que has solicitado</p>
+                </div>
+            </div>
 
-{% if prestamos %}
-<table>
-    <thead>
-        <tr>
-            <th>Herramienta</th>
-            <th>Propietario</th>
-            <th>Fecha de solicitud</th>
-            <th>Fecha de inicio</th>
-            <th>Fecha de fin</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for prestamo in prestamos %}
-        <tr>
-            <td>{{ prestamo.herramienta.nombre }}</td>
-            <td>{{ prestamo.herramienta.propietario.username }}</td>
-            <td>{{ prestamo.fecha_solicitud|date:"d/m/Y H:i" }}</td>
-            <td>{{ prestamo.fecha_inicio|date:"d/m/Y" }}</td>
-            <td>{{ prestamo.fecha_fin|date:"d/m/Y" }}</td>
-            <td>{{ prestamo.get_estado_display }}</td>
-            <td>
-                {% if prestamo.estado != 'finalizado' and prestamo.estado != 'rechazado' %}
-                <a href="{% url 'actualizar_estado_prestamo' prestamo.id %}">Cambiar estado</a>
-                {% endif %}
-                {% if prestamo.estado == 'finalizado' %}
-                <a href="{% url 'calificar_prestamo' prestamo.id %}">Calificar</a>
-                {% endif %}
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-{% else %}
-<p>No tienes préstamos solicitados.</p>
-{% endif %}
+            {% if prestamos %}
+            <!-- Tarjeta contenedora de la tabla -->
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-0">
+                    <!-- Tabla responsive -->
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="ps-4"><i class="bi bi-tools me-1"></i> Herramienta</th>
+                                    <th><i class="bi bi-person me-1"></i> Propietario</th>
+                                    <th><i class="bi bi-calendar-event me-1"></i> Solicitud</th>
+                                    <th><i class="bi bi-calendar-check me-1"></i> Inicio</th>
+                                    <th><i class="bi bi-calendar-x me-1"></i> Fin</th>
+                                    <th><i class="bi bi-info-circle me-1"></i> Estado</th>
+                                    <th class="text-end pe-4"><i class="bi bi-gear me-1"></i> Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for prestamo in prestamos %}
+                                <tr>
+                                    <td class="ps-4">
+                                        <strong>{{ prestamo.herramienta.nombre }}</strong>
+                                        <small class="d-block text-muted">{{ prestamo.herramienta.categoria }}</small>
+                                    </td>
+                                    <td>{{ prestamo.herramienta.propietario.username }}</td>
+                                    <td>{{ prestamo.fecha_solicitud|date:"d/m/Y H:i" }}</td>
+                                    <td>{{ prestamo.fecha_inicio|date:"d/m/Y" }}</td>
+                                    <td>{{ prestamo.fecha_fin|date:"d/m/Y" }}</td>
+                                    <td>
+                                        <span class="badge 
+                                            {% if prestamo.estado == 'pendiente' %}bg-warning text-dark
+                                            {% elif prestamo.estado == 'aprobado' %}bg-success
+                                            {% elif prestamo.estado == 'rechazado' %}bg-danger
+                                            {% elif prestamo.estado == 'finalizado' %}bg-secondary
+                                            {% else %}bg-info{% endif %}">
+                                            {{ prestamo.get_estado_display }}
+                                        </span>
+                                    </td>
+                                    <td class="text-end pe-4">
+                                        {% if prestamo.estado != 'finalizado' and prestamo.estado != 'rechazado' %}
+                                        <a href="{% url 'actualizar_estado_prestamo' prestamo.id %}" 
+                                           class="btn btn-sm btn-outline-primary me-1"
+                                           data-bs-toggle="tooltip" data-bs-placement="top" title="Cambiar estado">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
+                                        {% endif %}
+                                        {% if prestamo.estado == 'finalizado' %}
+                                        <a href="{% url 'calificar_prestamo' prestamo.id %}" 
+                                           class="btn btn-sm btn-outline-success"
+                                           data-bs-toggle="tooltip" data-bs-placement="top" title="Calificar préstamo">
+                                            <i class="bi bi-star-fill"></i>
+                                        </a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <!-- Mensaje cuando no hay préstamos -->
+            <div class="card shadow-sm border-0 text-center py-5">
+                <div class="card-body">
+                    <i class="bi bi-clipboard-x display-4 text-muted mb-3"></i>
+                    <h3 class="text-muted">No tienes préstamos solicitados</h3>
+                    <p class="text-muted">Cuando solicites herramientas, aparecerán aquí</p>
+                    <a  class="btn btn-primary mt-3">
+                        <i class="bi bi-search me-1"></i> Buscar herramientas
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Estilos adicionales -->
+<style>
+    .table-hover tbody tr:hover {
+        background-color: rgba(58, 123, 213, 0.05);
+    }
+    
+    .table th {
+        border-top: none;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        letter-spacing: 0.5px;
+    }
+    
+    .table td {
+        vertical-align: middle;
+    }
+</style>
+
+<!-- Script para tooltips -->
+<script>
+    // Inicializar tooltips
+    document.addEventListener('DOMContentLoaded', function() {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    })
+</script>
 {% endblock %}
