@@ -1,8 +1,11 @@
-{% extends 'base.html' %} {% block content %}
-<div class="container my-5">
+{% extends 'base.html' %} 
+{% block content %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Merienda:wght@300..900&family=Oswald:wght@200..700&family=Permanent+Marker&family=Tagesschrift&display=swap" rel="stylesheet">
+<div class="container my-5" style="max-width: 600px;">
   <div class="card border-0 shadow-lg">
-    <!-- Encabezado con imagen de fondo -->
-    <div class="card-header bg-gradient-primary text-white py-4">
+    <div class="card-header bg-gradient-morado text-white py-4">
       <div class="d-flex justify-content-between align-items-center">
         <div>
           <h2 class="mb-0">
@@ -13,13 +16,11 @@
           </p>
         </div>
         <div
-          class="bg-white rounded-circle p-2"
-          style="width: 60px; height: 60px"
-        >
+          class="rounded-circle  p-2"
+          style="width: 60px; height: 60px; background-color: #2e1a26;">
           <i
-            class="bi bi-clipboard-check text-primary"
-            style="font-size: 2rem"
-          ></i>
+            class="bi bi-clipboard-check"
+            style="font-size: 2rem; color: #ffff;"></i>
         </div>
       </div>
     </div>
@@ -46,10 +47,7 @@
           <div class="col-md-6">
             <div class="d-flex align-items-center mb-2">
               <i class="bi bi-person-circle me-2 text-muted"></i>
-              <span
-                ><strong>Propietario:</strong> {{
-                herramienta.propietario.username }}</span
-              >
+              <strong>Propietario:</strong> {{ herramienta.propietario.username }}
             </div>
           </div>
         </div>
@@ -63,10 +61,11 @@
       <hr class="my-4" />
 
       <!-- Formulario de solicitud -->
-      <h4 class="mb-4 text-primary">
-        <i class="bi bi-pencil-square me-2"></i> Detalles del Préstamo
-      </h4>
-
+      <div class="pt-3 pb-0 px-3" style="background: linear-gradient(145deg,rgb(63, 27, 48),rgb(188, 138, 129),rgb(245, 237, 236)); display: inline-block; border-radius: 8px;">
+        <h4 class="mb-4 det">
+          <i class="bi bi-pencil-square me-2"></i> Detalles del Préstamo
+        </h4>
+      </div>      
       <form method="post" class="needs-validation" novalidate>
         {% csrf_token %} {% if form.errors %}
         <div class="alert alert-danger alert-dismissible fade show">
@@ -86,8 +85,7 @@
         <!-- Fecha de inicio -->
         <div class="mb-4">
           <label for="{{ form.fecha_inicio.id_for_label }}" class="form-label">
-            <i class="bi bi-calendar-check me-1"></i> {{ form.fecha_inicio.label
-            }}
+            <i class="bi bi-calendar-check me-1"></i> {{ form.fecha_inicio.label }}
           </label>
           <div class="input-group">
             <span class="input-group-text"
@@ -143,8 +141,8 @@
           >
             <i class="bi bi-arrow-left me-1"></i> Volver
           </a>
-          <button type="submit" class="btn btn-primary px-4">
-            <i class="bi bi-send-check me-1"></i> Enviar Solicitud
+          <button type="submit" class="btn px-4" style="background: linear-gradient(135deg,rgb(61, 9, 43),rgb(90, 25, 41)); color: #ffff;">
+            <i class="bi bi-send-check me-1" style="color: #ffff;"></i> Enviar Solicitud
           </button>
         </div>
       </form>
@@ -166,8 +164,23 @@
 </div>
 
 <style>
-  .bg-gradient-primary {
-    background-color: #a67c75;
+  .bg-gradient-morado {
+    background: linear-gradient(135deg, #5c2b32, #a67c75);
+  }
+  .container {
+    font-family: "Merienda", cursive;
+  }
+  .merienda-<uniquifier> {
+    font-family: "Merienda", cursive;
+    font-optical-sizing: auto;
+    font-weight: <weight>;
+    font-style: normal;
+  }
+  .bi{
+    color:  #2e1a26;
+  }
+  .det{
+    color:rgb(56, 27, 31);
   }
 </style>
 {% endblock %}
