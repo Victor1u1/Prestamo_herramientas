@@ -137,7 +137,6 @@
     .rating-score {
         display: inline-flex;
         align-items: center;
-        background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
         color: var(--color-white);
         padding: 0.5rem 1rem;
         border-radius: 20px;
@@ -146,6 +145,27 @@
         min-width: 60px;
         justify-content: center;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Colores específicos para cada calificación */
+    .rating-score.rating-1 {
+        background: linear-gradient(135deg, #e53e3e, #dc2626);
+    }
+
+    .rating-score.rating-2 {
+        background: linear-gradient(135deg, #ff8c00, #ea580c);
+    }
+
+    .rating-score.rating-3 {
+        background: linear-gradient(135deg, #ffd700, #f59e0b);
+    }
+
+    .rating-score.rating-4 {
+        background: linear-gradient(135deg, #9acd32, #84cc16);
+    }
+
+    .rating-score.rating-5 {
+        background: linear-gradient(135deg, #22c55e, #16a34a);
     }
 
     .rating-score::after {
@@ -308,7 +328,7 @@
                         <div class="user-name">{{ calificacion.califica_usuario.username }}</div>
                     </td>
                     <td>
-                        <span class="rating-score">{{ calificacion.get_puntaje_display }}</span>
+                        <span class="rating-score rating-{{ calificacion.puntaje }}">{{ calificacion.get_puntaje_display }}</span>
                     </td>
                     <td class="comment-cell">
                         {% if calificacion.comentario %}

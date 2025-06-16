@@ -378,16 +378,19 @@ document.addEventListener('DOMContentLoaded', function() {
         ratingSelect.addEventListener('change', function() {
             const value = this.value;
             const colors = {
-                '1': '#f44336',
-                '2': '#ff9800',
-                '3': '#ffc107',
-                '4': '#8bc34a',
-                '5': '#4caf50'
+                '1': '#e53e3e',     // Muy Malo - Rojo
+                '2': '#ff8c00',     // Malo - Naranja  
+                '3': '#ffd700',     // Regular - Amarillo
+                '4': '#9acd32',     // Bueno - Amarillo verdoso claro
+                '5': '#22c55e'      // Excelente - Verde
             };
             
             if (colors[value]) {
                 this.style.borderColor = colors[value];
                 this.style.boxShadow = `0 0 0 3px ${colors[value]}33`;
+                // Cambiar también el color del texto para mayor impacto visual
+                this.style.color = colors[value];
+                this.style.fontWeight = '700';
             }
         });
     }
